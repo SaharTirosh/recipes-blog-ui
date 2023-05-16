@@ -40,7 +40,7 @@ const RecipesGrid = () => {
             </span>
             <h2>{selectedRecipe.name}</h2>
             <p>{selectedRecipe.description}</p>
-            <CookingMode recipe={selectedRecipe}/>
+            <CookingMode recipe={selectedRecipe} />
           </div>
         </div>
       )}

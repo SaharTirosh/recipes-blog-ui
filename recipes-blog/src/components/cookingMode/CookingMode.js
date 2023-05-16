@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import './CookingMode.css';
+import React, { useState, useEffect } from "react";
+import "./CookingMode.css";
 
 const CookingMode = ({ recipe }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [timer, setTimer] = useState(null);
   const [isLastStep, setIsLastStep] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [timeRemaining, setTimeRemaining] = useState(
+    recipe.steps[0].timer * 60
+  );
 
   useEffect(() => {
     return () => {
-      // Clear the timer when the component unmounts
       clearTimeout(timer);
     };
   }, [timer]);
@@ -21,19 +22,17 @@ const CookingMode = ({ recipe }) => {
 
   const handleNextStep = () => {
     if (isTimerActive) {
-      // Timer is active, do not proceed to next step
       return;
     }
 
     if (currentStep < recipe.steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Handle completion of cooking mode
     }
   };
 
   const startTimer = (time) => {
-    clearTimeout(timer); // Clear the previous timer, if any
+    clearTimeout(timer);
     setIsTimerActive(true);
     setTimeRemaining(time * 60);
 
@@ -50,7 +49,9 @@ const CookingMode = ({ recipe }) => {
     const minutes = Math.floor((time % 3600) / 60);
     const seconds = time % 60;
 
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
   useEffect(() => {
@@ -76,7 +77,6 @@ const CookingMode = ({ recipe }) => {
         <p>Output: {currentStepData.recipeOutput}</p>
         {currentStepData.timer > 0 && <p>Timer: {formatTime(timeRemaining)}</p>}
 
-        {/* Render the ingredients for the current step */}
         <div className="step-content">
           <h3>Ingredients:</h3>
           <ul>
@@ -88,31 +88,30 @@ const CookingMode = ({ recipe }) => {
           </ul>
         </div>
 
-        {/* Render the user input section if required */}
         {currentStepData.input && (
           <div className="step-content">
             <h3>User Input:</h3>
             <input type="text" />
-            {/* Add appropriate event handlers to handle user input */}
           </div>
         )}
 
-        {/* Render the next step button */}
         <div className="step-actions">
           {!isLastStep && (
             <button onClick={handleNextStep} disabled={isTimerActive}>
-              {isTimerActive ? 'Timer in progress...' : 'Next Step'}
+              {isTimerActive ? "Timer in progress..." : "Next Step"}
             </button>
           )}
 
-          {/* Start the timer if required */}
           {currentStepData.timer > 0 && (
             <div className="timer-container">
               <div className="timer">
                 {isTimerActive ? (
                   <span>{formatTime(timeRemaining)}</span>
                 ) : (
-                  <button className="timer-action timer-start" onClick={() => startTimer(currentStepData.timer)}>
+                  <button
+                    className="timer-action timer-start"
+                    onClick={() => startTimer(currentStepData.timer)}
+                  >
                     Start Timer
                   </button>
                 )}
@@ -124,6 +123,5 @@ const CookingMode = ({ recipe }) => {
     </div>
   );
 };
-
 
 export default CookingMode;

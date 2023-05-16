@@ -1,31 +1,30 @@
 .recipe-form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  
-  .step {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .step label {
-    font-weight: bold;
-  }
-  
-  .ingredients {
-    margin-top: 10px;
-  }
-  
-  .ingredient {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  button {
-    margin-top: 5px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.step {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.step label {
+  font-weight: bold;
+}
+
+.ingredients {
+  margin-top: 10px;
+}
+
+.ingredient {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+button {
+  margin-top: 5px;
+}

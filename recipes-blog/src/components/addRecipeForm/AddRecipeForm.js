@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import './AddRecipeForm.css';
+import React, { useState } from "react";
+import axios from "axios";
+import "./AddRecipeForm.css";
 
 const RecipeForm = () => {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [steps, setSteps] = useState([
     {
-      description: '',
-      recipeOutput: '',
+      description: "",
+      recipeOutput: "",
       timer: 0,
-      ingredients: [{ name: '', amount: 0 }],
+      ingredients: [{ name: "", amount: 0 }],
     },
   ]);
   const [errors, setErrors] = useState({});
@@ -28,24 +28,20 @@ const RecipeForm = () => {
   };
 
   const handleAddStep = () => {
-    setSteps([...steps, { description: '', recipeOutput: '', timer: 0, ingredients: [{ name: '', amount: 0 }] }]);
+    setSteps([
+      ...steps,
+      {
+        description: "",
+        recipeOutput: "",
+        timer: 0,
+        ingredients: [{ name: "", amount: 0 }],
+      },
+    ]);
   };
 
   const handleAddIngredient = (index) => {
     const updatedSteps = [...steps];
-    updatedSteps[index].ingredients.push({ name: '', amount: 0 });
-    setSteps(updatedSteps);
-  };
-
-  const handleRemoveStep = (index) => {
-    const updatedSteps = [...steps];
-    updatedSteps.splice(index, 1);
-    setSteps(updatedSteps);
-  };
-
-  const handleRemoveIngredient = (index, subIndex) => {
-    const updatedSteps = [...steps];
-    updatedSteps[index].ingredients.splice(subIndex, 1);
+    updatedSteps[index].ingredients.push({ name: "", amount: 0 });
     setSteps(updatedSteps);
   };
 
@@ -55,17 +51,21 @@ const RecipeForm = () => {
     // Validation checks
     const validationErrors = {};
 
-    if (name.trim() === '') {
-      validationErrors.name = 'Recipe Name is required';
+    if (name.trim() === "") {
+      validationErrors.name = "Recipe Name is required";
     }
 
     steps.forEach((step, index) => {
-      if (step.description.trim() === '') {
-        validationErrors[`description-${index}`] = `Step ${index + 1} Description is required`;
+      if (step.description.trim() === "") {
+        validationErrors[`description-${index}`] = `Step ${
+          index + 1
+        } Description is required`;
       }
 
       if (step.timer < 0) {
-        validationErrors[`timer-${index}`] = `Step ${index + 1} Timer must be a positive number`;
+        validationErrors[`timer-${index}`] = `Step ${
+          index + 1
+        } Timer must be a positive number`;
       }
     });
 
@@ -76,19 +76,18 @@ const RecipeForm = () => {
 
     try {
       const recipe = { name, steps };
-      await axios.post('http://localhost:8080/recipe', recipe);
-      // Handle success or redirect
+      await axios.post("http://localhost:8080/recipe", recipe);
 
-      setName('');
+      setName("");
       setSteps([
         {
-          description: '',
-          recipeOutput: '',
+          description: "",
+          recipeOutput: "",
           timer: 0,
-          ingredients: [{ name: '', amount: 0 }],
+          ingredients: [{ name: "", amount: 0 }],
         },
       ]);
-      alert('Recipe added successfully!');
+      alert("Recipe added successfully!");
     } catch (error) {
       throw new Error("There was an error during adding the recipe");
     }
@@ -104,7 +103,7 @@ const RecipeForm = () => {
           name="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className={errors.name ? 'error' : ''}
+          className={errors.name ? "error" : ""}
         />
         {errors.name && <span className="error-message">{errors.name}</span>}
       </div>
@@ -113,21 +112,27 @@ const RecipeForm = () => {
         {steps.map((step, index) => (
           <div key={index} className="step">
             <div>
-              <label htmlFor={`stepDescription-${index}`}>Step {index + 1} Description:</label>
+              <label htmlFor={`stepDescription-${index}`}>
+                Step {index + 1} Description:
+              </label>
               <input
                 type="text"
                 id={`stepDescription-${index}`}
                 name="description"
                 value={step.description}
                 onChange={(e) => handleInputChange(e, index)}
-                className={errors[`description-${index}`] ? 'error' : ''}
+                className={errors[`description-${index}`] ? "error" : ""}
               />
               {errors[`description-${index}`] && (
-                <span className="error-message">{errors[`description-${index}`]}</span>
+                <span className="error-message">
+                  {errors[`description-${index}`]}
+                </span>
               )}
             </div>
             <div>
-              <label htmlFor={`stepRecipeOutput-${index}`}>Step {index + 1} Output:</label>
+              <label htmlFor={`stepRecipeOutput-${index}`}>
+                Step {index + 1} Output:
+              </label>
               <input
                 type="text"
                 id={`stepRecipeOutput-${index}`}
@@ -137,17 +142,21 @@ const RecipeForm = () => {
               />
             </div>
             <div>
-              <label htmlFor={`stepTimer-${index}`}>Step {index + 1} Timer:</label>
+              <label htmlFor={`stepTimer-${index}`}>
+                Step {index + 1} Timer:
+              </label>
               <input
                 type="number"
                 id={`stepTimer-${index}`}
                 name="timer"
                 value={step.timer}
                 onChange={(e) => handleInputChange(e, index)}
-                className={errors[`timer-${index}`] ? 'error' : ''}
+                className={errors[`timer-${index}`] ? "error" : ""}
               />
               {errors[`timer-${index}`] && (
-                <span className="error-message">{errors[`timer-${index}`]}</span>
+                <span className="error-message">
+                  {errors[`timer-${index}`]}
+                </span>
               )}
             </div>
             <div className="ingredients">
@@ -155,7 +164,9 @@ const RecipeForm = () => {
               {step.ingredients.map((ingredient, subIndex) => (
                 <div key={subIndex} className="ingredient">
                   <div>
-                    <label htmlFor={`ingredientName-${index}-${subIndex}`}>Ingredient Name:</label>
+                    <label htmlFor={`ingredientName-${index}-${subIndex}`}>
+                      Ingredient Name:
+                    </label>
                     <input
                       type="text"
                       id={`ingredientName-${index}-${subIndex}`}
@@ -165,7 +176,9 @@ const RecipeForm = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor={`ingredientAmount-${index}-${subIndex}`}>Ingredient Amount:</label>
+                    <label htmlFor={`ingredientAmount-${index}-${subIndex}`}>
+                      Ingredient Amount:
+                    </label>
                     <input
                       type="number"
                       id={`ingredientAmount-${index}-${subIndex}`}
@@ -174,18 +187,12 @@ const RecipeForm = () => {
                       onChange={(e) => handleInputChange(e, index, subIndex)}
                     />
                   </div>
-                  <button type="button" onClick={() => handleRemoveIngredient(index, subIndex)}>
-                    Remove Ingredient
-                  </button>
                 </div>
               ))}
               <button type="button" onClick={() => handleAddIngredient(index)}>
                 Add Ingredient
               </button>
             </div>
-            <button type="button" onClick={() => handleRemoveStep(index)}>
-              Remove Step
-            </button>
           </div>
         ))}
         <button type="button" onClick={handleAddStep}>
@@ -195,7 +202,6 @@ const RecipeForm = () => {
       <button type="submit">Add Recipe</button>
     </form>
   );
-  
-              }
+};
 
 export default RecipeForm;
