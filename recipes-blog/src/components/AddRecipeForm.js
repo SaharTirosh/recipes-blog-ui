@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './AddRecipeForm.css';
 
 const RecipeForm = () => {
   const [name, setName] = useState('');
@@ -11,6 +12,7 @@ const RecipeForm = () => {
       ingredients: [{ name: '', amount: 0 }],
     },
   ]);
+  const [errors, setErrors] = useState({});
 
   const handleInputChange = (e, index, subIndex) => {
     const { name, value } = e.target;
@@ -49,12 +51,46 @@ const RecipeForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation checks
+    const validationErrors = {};
+
+    if (name.trim() === '') {
+      validationErrors.name = 'Recipe Name is required';
+    }
+
+    steps.forEach((step, index) => {
+      if (step.description.trim() === '') {
+        validationErrors[`description-${index}`] = `Step ${index + 1} Description is required`;
+      }
+
+      if (step.timer < 0) {
+        validationErrors[`timer-${index}`] = `Step ${index + 1} Timer must be a positive number`;
+      }
+    });
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     try {
       const recipe = { name, steps };
       await axios.post('http://localhost:8080/recipe', recipe);
       // Handle success or redirect
+
+      setName('');
+      setSteps([
+        {
+          description: '',
+          recipeOutput: '',
+          timer: 0,
+          ingredients: [{ name: '', amount: 0 }],
+        },
+      ]);
+      alert('Recipe added successfully!');
     } catch (error) {
-      // Handle error
+      throw new Error("There was an error during adding the recipe");
     }
   };
 
@@ -62,7 +98,15 @@ const RecipeForm = () => {
     <form onSubmit={handleSubmit} className="recipe-form">
       <div>
         <label htmlFor="name">Recipe Name:</label>
-        <input type="text" id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} />
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className={errors.name ? 'error' : ''}
+        />
+        {errors.name && <span className="error-message">{errors.name}</span>}
       </div>
       <div>
         <h2>Steps:</h2>
@@ -76,7 +120,11 @@ const RecipeForm = () => {
                 name="description"
                 value={step.description}
                 onChange={(e) => handleInputChange(e, index)}
+                className={errors[`description-${index}`] ? 'error' : ''}
               />
+              {errors[`description-${index}`] && (
+                <span className="error-message">{errors[`description-${index}`]}</span>
+              )}
             </div>
             <div>
               <label htmlFor={`stepRecipeOutput-${index}`}>Step {index + 1} Output:</label>
@@ -96,7 +144,11 @@ const RecipeForm = () => {
                 name="timer"
                 value={step.timer}
                 onChange={(e) => handleInputChange(e, index)}
+                className={errors[`timer-${index}`] ? 'error' : ''}
               />
+              {errors[`timer-${index}`] && (
+                <span className="error-message">{errors[`timer-${index}`]}</span>
+              )}
             </div>
             <div className="ingredients">
               <h4>Ingredients:</h4>

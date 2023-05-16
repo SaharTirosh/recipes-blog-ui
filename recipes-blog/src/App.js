@@ -1,15 +1,23 @@
-import './App.css';
-import RecipesGrid from './components/RecipesGrid';
+import React from 'react';
+import { BrowserRouter as Router , Routes ,Route } from 'react-router-dom';
+import Home from './components/Home';
 import RecipeForm from './components/AddRecipeForm';
+import Navbar from './components/Navbar';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <h1>Recipes Blog</h1>
-      <RecipesGrid /> 
-      <RecipeForm/>
-    </div>
+    <Router>
+      <div>
+        <Navbar />
+        <Routes>
+          {/* <Route exact path="/" component={Home} /> */}
+          <Route path='/' element={<Home/>} />
+          {/* // <Route path="/recipe-form" component={RecipeForm} /> */}
+          <Route path='/recipe-form' element={<RecipeForm/>} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
