@@ -26,9 +26,20 @@ const CookingMode = ({ recipe }) => {
     }
 
     if (currentStep < recipe.steps.length - 1) {
+      if (recipe.steps[currentStep].timer > 0 && timeRemaining > 0) {
+        alert(
+          "You need to finish the timer before proceeding to the next step"
+        );
+        return;
+      }
       setCurrentStep(currentStep + 1);
-    } else {
+      setTimeRemaining(recipe.steps[currentStep + 1].timer * 60);
     }
+  };
+
+  const moveNextStep = () => {
+    setCurrentStep(currentStep + 1);
+    setTimeRemaining(recipe.steps[currentStep + 1].timer * 60);
   };
 
   const startTimer = (time) => {
@@ -39,7 +50,7 @@ const CookingMode = ({ recipe }) => {
     setTimer(
       setTimeout(() => {
         setIsTimerActive(false);
-        handleNextStep();
+        moveNextStep();
       }, time * 60 * 1000)
     );
   };
@@ -67,7 +78,7 @@ const CookingMode = ({ recipe }) => {
   }, [isTimerActive, timeRemaining]);
 
   const currentStepData = recipe.steps[currentStep];
-
+  
   return (
     <div className="cooking-mode">
       <div className="step-container">
