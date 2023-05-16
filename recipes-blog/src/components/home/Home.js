@@ -1,11 +1,11 @@
 import React from 'react';
-import RecipesGrid from './RecipesGrid';
+import RecipesGrid from '../recipesGrid/RecipesGrid';
 
 const Home = () => {
   return (
 <>
       <h1 style={{textAlign: 'center'}}>Welcome to our Recipes Blog!</h1>
-      <h2>Here is all of our recipes:</h2>
+      <h3>Here is all of our recipes, click your favorite to turn on cooking mode</h3>
       <RecipesGrid/>
 </>
 )

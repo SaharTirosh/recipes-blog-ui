@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import CookingMode from "../cookingMode/CookingMode";
+import "./RecipesGrid.css";
 
 const RecipesGrid = () => {
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8080/recipe')
-      .then(response => response.json())
-      .then(data => setRecipes(data))
-      .catch(error => console.log(error));
+    fetch("http://localhost:8080/recipe")
+      .then((response) => response.json())
+      .then((data) => setRecipes(data))
+      .catch((error) => console.log(error));
   }, []);
 
-  const handleRecipeClick = recipe => {
+  const handleRecipeClick = (recipe) => {
     setSelectedRecipe(recipe);
   };
 
@@ -21,7 +23,7 @@ const RecipesGrid = () => {
 
   return (
     <div className="recipe-grid">
-      {recipes.map(recipe => (
+      {recipes.map((recipe) => (
         <div
           key={recipe.id}
           className="recipe-cube"
@@ -38,7 +40,7 @@ const RecipesGrid = () => {
             </span>
             <h2>{selectedRecipe.name}</h2>
             <p>{selectedRecipe.description}</p>
-            {/* Add more details about the selected recipe */}
+            <CookingMode recipe={selectedRecipe}/>
           </div>
         </div>
       )}
