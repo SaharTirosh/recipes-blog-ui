@@ -17,7 +17,7 @@ To run the application locally, follow these steps:
 
 2. Clone the UI repository from [GitHub](https://github.com/SaharTirosh/recipes-blog-ui.git) to your local machine.
 
-3. Navigate to the project directory and install the dependencies by running the following command:
+3. Navigate to therecipes-blog directory and install the dependencies by running the following command:
 
    ```shell
    npm install
